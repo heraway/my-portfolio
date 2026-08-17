@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import {
   Gamepad2, Palette, Box, PenTool, Wrench, Compass,
-  Play, ExternalLink, X, Mail, Link2, AtSign, Pin,
+  Play, ExternalLink, Mail, Link2, AtSign, Pin,
   Sparkles, ChevronRight
 } from "lucide-react";
 
@@ -150,19 +150,21 @@ const PROJECTS = [
   },
 ];
 
+const ARTSTATION_LINK = "https://www.artstation.com/heraway";
+
 const ART_PIECES = [
-  { title: "Character Study — Wanderer", tag: "Character Design", image: "/images/art-2d/character-study.jpg" },
-  { title: "Marketplace, Dusk", tag: "Environment Concept", image: "/images/art-2d/marketplace-dusk.jpg" },
-  { title: "Comic Page 04", tag: "Comic Art", image: "/images/art-2d/comic-page-04.jpg" },
-  { title: "Storyboard — Chase Sequence", tag: "Storyboarding", image: "/images/art-2d/storyboard-chase.jpg" },
-  { title: "Creature Sheet — Fen Stalker", tag: "Concept Art", image: "/images/art-2d/creature-sheet.jpg" },
-  { title: "Portrait Study", tag: "Illustration", image: "/images/art-2d/portrait-study.jpg" },
+  { title: "Character Study — Wanderer", tag: "Character Design", link: ARTSTATION_LINK },
+  { title: "Marketplace, Dusk", tag: "Environment Concept", link: ARTSTATION_LINK },
+  { title: "Comic Page 04", tag: "Comic Art", link: ARTSTATION_LINK },
+  { title: "Storyboard — Chase Sequence", tag: "Storyboarding", link: ARTSTATION_LINK },
+  { title: "Creature Sheet — Fen Stalker", tag: "Concept Art", link: ARTSTATION_LINK },
+  { title: "Portrait Study", tag: "Illustration", link: ARTSTATION_LINK },
 ];
 
 const MODELS_3D = [
-  { title: "Wayshrine Prop Kit", tag: "3D Asset", image: "/images/3d/wayshrine-prop-kit.jpg" },
-  { title: "Character Base Mesh", tag: "3D Asset", image: "/images/3d/character-base-mesh.jpg" },
-  { title: "Modular Ruins Set", tag: "3D Asset", image: "/images/3d/modular-ruins-set.jpg" },
+  { title: "Wayshrine Prop Kit", tag: "3D Asset", link: ARTSTATION_LINK },
+  { title: "Character Base Mesh", tag: "3D Asset", link: ARTSTATION_LINK },
+  { title: "Modular Ruins Set", tag: "3D Asset", link: ARTSTATION_LINK },
 ];
 
 const WRITING_SAMPLES = [
@@ -193,12 +195,12 @@ const ANIMATIONS = [
   {
     title: "Animation Reel 01",
     tag: "Character Animation",
-    video: "/videos/animation-reel-01.mp4",
+    link: DRIVE_LINK, // swap for a YouTube/Instagram reel link once posted
   },
   {
     title: "Animation Reel 02",
     tag: "Motion Study",
-    video: "/videos/animation-reel-02.mp4",
+    link: DRIVE_LINK,
   },
 ];
 
@@ -212,7 +214,6 @@ const TIER_COLOR = {
 
 export default function Portfolio() {
   const [activeFilter, setActiveFilter] = useState("All");
-  const [lightboxItem, setLightboxItem] = useState(null);
   const [openPin, setOpenPin] = useState(null);
   const refs = useRef({});
 
@@ -456,20 +457,15 @@ export default function Portfolio() {
         .pf-gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 18px; }
         .pf-gallery-item {
           aspect-ratio: 4/3; background: linear-gradient(135deg, var(--parchment-2), #d9c9a3);
-          background-size: cover; background-position: center;
           border-radius: 6px; position: relative; overflow: hidden; cursor: pointer;
-          display: flex; align-items: flex-end; padding: 14px; border: 1px solid rgba(27,36,48,0.1);
-          transition: transform 0.2s ease;
+          display: flex; flex-direction: column; align-items: flex-start; justify-content: space-between;
+          padding: 16px; border: 1px solid rgba(27,36,48,0.1); text-decoration: none; color: var(--ink);
+          transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
-        .pf-gallery-item:hover { transform: scale(1.02); }
-        .pf-gallery-item span { font-family: 'IBM Plex Mono', monospace; font-size: 11px; background: rgba(27,36,48,0.85); color: var(--parchment); padding: 4px 8px; border-radius: 3px; }
-
-        .pf-lightbox {
-          position: fixed; inset: 0; background: rgba(27,36,48,0.88); z-index: 100;
-          display: flex; align-items: center; justify-content: center; padding: 40px;
-        }
-        .pf-lightbox-inner { background: var(--parchment); border-radius: 8px; padding: 40px; max-width: 520px; width: 100%; position: relative; }
-        .pf-lightbox-close { position: absolute; top: 14px; right: 14px; background: none; border: none; cursor: pointer; color: var(--ink); }
+        .pf-gallery-item:hover { transform: translateY(-3px); box-shadow: 5px 6px 0 rgba(27,36,48,0.08); }
+        .pf-gallery-item .pf-gallery-icon { color: var(--redpin); }
+        .pf-gallery-item h4 { font-family: 'Space Grotesk', sans-serif; font-size: 0.95rem; margin: 0; font-weight: 600; line-height: 1.25; }
+        .pf-gallery-item span { font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: var(--teal); text-transform: uppercase; letter-spacing: 0.04em; }
 
         /* --- Writing --- */
         .pf-write-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
@@ -477,14 +473,6 @@ export default function Portfolio() {
         .pf-write-card h4 { font-family: 'Space Grotesk', sans-serif; margin: 0 0 8px; font-size: 1rem; }
         .pf-write-card span { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--teal); }
         .pf-write-excerpt { font-size: 0.88rem; color: var(--graphite); line-height: 1.55; margin: 12px 0 4px; font-style: italic; }
-
-        /* --- Animation --- */
-        .pf-anim-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
-        .pf-anim-card { background: var(--ink); border-radius: 6px; overflow: hidden; }
-        .pf-anim-video { width: 100%; aspect-ratio: 16/9; display: block; background: #000; }
-        .pf-anim-meta { padding: 14px 18px; }
-        .pf-anim-meta h4 { font-family: 'Space Grotesk', sans-serif; color: var(--parchment); margin: 0 0 4px; font-size: 0.95rem; }
-        .pf-anim-meta span { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--amber); }
 
         /* --- Contact --- */
         .pf-contact { text-align: left; }
@@ -502,7 +490,7 @@ export default function Portfolio() {
       {/* NAV */}
       <nav className="pf-nav">
         <div className="pf-nav-brand" onClick={() => scrollTo("hero")}>
-          <span className="pf-nav-dot" /> Mutale Mukuka
+          <span className="pf-nav-dot" /> Mutale Wayne Mukuka
         </div>
         <div className="pf-nav-tabs">
           {SECTIONS.filter((s) => s.id !== "hero").map((s) => (
@@ -518,7 +506,7 @@ export default function Portfolio() {
         <section id="hero" ref={(el) => (refs.current.hero = el)} className="pf-section pf-hero">
           <div className="pf-stamp"><Sparkles size={13} /> Open for opportunities</div>
           <h1 className="pf-h1 pf-display pf-hero-title">
-            Mutale Mukuka<br />Game Developer
+            Mutale Wayne Mukuka<br />Game Developer
           </h1>
           <p className="pf-lede pf-hero-sub">
             Gameplay programmer and technical artist working across Unity, C#, 3D, and digital art.
@@ -664,16 +652,19 @@ export default function Portfolio() {
           <h2 className="pf-h2 pf-display">Art &amp; concept</h2>
           <div className="pf-gallery-grid">
             {ART_PIECES.map((a) => (
-              <div
-                className="pf-gallery-item"
-                key={a.title}
-                style={{ backgroundImage: `url(${a.image})` }}
-                onClick={() => setLightboxItem(a)}
-              >
-                <span>{a.tag}</span>
-              </div>
+              <a className="pf-gallery-item" key={a.title} href={a.link} target="_blank" rel="noopener noreferrer">
+                <ExternalLink size={16} className="pf-gallery-icon" />
+                <div>
+                  <h4>{a.title}</h4>
+                  <span>{a.tag}</span>
+                </div>
+              </a>
             ))}
           </div>
+          <p className="pf-embed-note">
+            Each tile links out to Instagram for now — once you've got specific post URLs, swap each
+            entry's <code>link</code> in <code>ART_PIECES</code> to point at that exact piece.
+          </p>
         </section>
 
         {/* 3D */}
@@ -682,19 +673,18 @@ export default function Portfolio() {
           <h2 className="pf-h2 pf-display">Models &amp; game-ready assets</h2>
           <div className="pf-gallery-grid">
             {MODELS_3D.map((m) => (
-              <div
-                className="pf-gallery-item"
-                key={m.title}
-                style={{ backgroundImage: `url(${m.image})` }}
-                onClick={() => setLightboxItem(m)}
-              >
-                <span>{m.title}</span>
-              </div>
+              <a className="pf-gallery-item" key={m.title} href={m.link} target="_blank" rel="noopener noreferrer">
+                <ExternalLink size={16} className="pf-gallery-icon" />
+                <div>
+                  <h4>{m.title}</h4>
+                  <span>{m.tag}</span>
+                </div>
+              </a>
             ))}
           </div>
           <p className="pf-embed-note">
-            To wire this up for real: upload models to Sketchfab (free) and embed via their provided
-            &lt;iframe&gt; — gives visitors a real orbiting 3D viewer instead of a static image.
+            If you set up a free Sketchfab or ArtStation profile, link each entry there instead of Drive —
+            gives visitors a real interactive 3D viewer or a proper portfolio gallery.
           </p>
         </section>
 
@@ -702,22 +692,20 @@ export default function Portfolio() {
         <section id="animation" ref={(el) => (refs.current.animation = el)} className="pf-section">
           <div className="pf-eyebrow">Animation</div>
           <h2 className="pf-h2 pf-display">Motion &amp; animation reels</h2>
-          <div className="pf-anim-grid">
+          <div className="pf-gallery-grid">
             {ANIMATIONS.map((v) => (
-              <div className="pf-anim-card" key={v.title}>
-                <video controls preload="metadata" className="pf-anim-video">
-                  <source src={v.video} type="video/mp4" />
-                </video>
-                <div className="pf-anim-meta">
+              <a className="pf-gallery-item" key={v.title} href={v.link} target="_blank" rel="noopener noreferrer">
+                <Play size={16} className="pf-gallery-icon" />
+                <div>
                   <h4>{v.title}</h4>
                   <span>{v.tag}</span>
                 </div>
-              </div>
+              </a>
             ))}
           </div>
           <p className="pf-embed-note">
-            Drop .mp4 files into <code>public/videos/</code> and match the filename in the
-            <code> ANIMATIONS</code> array. Files not ready yet will just show an empty player until then.
+            Once you upload reels to YouTube or Instagram, swap each <code>link</code> in
+            <code> ANIMATIONS</code> for the direct video URL.
           </p>
         </section>
 
@@ -758,6 +746,7 @@ export default function Portfolio() {
             <a href="https://www.linkedin.com/in/mutale-mukuka-0338a0234/" target="_blank" rel="noopener noreferrer"><Link2 size={16} /> LinkedIn</a>
             <a href="https://github.com/heraway" target="_blank" rel="noopener noreferrer"><Link2 size={16} /> GitHub</a>
             <a href="https://heraway.itch.io" target="_blank" rel="noopener noreferrer"><Play size={16} /> itch.io</a>
+            <a href="https://www.artstation.com/heraway" target="_blank" rel="noopener noreferrer"><Palette size={16} /> ArtStation</a>
             <a href="https://www.instagram.com/heraway_/" target="_blank" rel="noopener noreferrer"><AtSign size={16} /> Instagram</a>
             <a href={DRIVE_LINK} target="_blank" rel="noopener noreferrer"><ExternalLink size={16} /> Full Archive (Drive)</a>
           </div>
@@ -765,20 +754,6 @@ export default function Portfolio() {
 
         <div className="pf-footer">Design doc v1.0 — last updated 2026 — built with React</div>
       </main>
-
-      {lightboxItem && (
-        <div className="pf-lightbox" onClick={() => setLightboxItem(null)}>
-          <div className="pf-lightbox-inner" onClick={(e) => e.stopPropagation()}>
-            <button className="pf-lightbox-close" onClick={() => setLightboxItem(null)}><X size={20} /></button>
-            <h3 className="pf-display" style={{ marginTop: 0 }}>{lightboxItem.title}</h3>
-            <p className="pf-mono" style={{ fontSize: 12, color: "var(--teal)" }}>{lightboxItem.tag}</p>
-            <p style={{ color: "var(--graphite)", lineHeight: 1.6 }}>
-              Replace this lightbox with your actual artwork image and a short process note —
-              what the brief was, key decisions, and what you'd change next time.
-            </p>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
